@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="./css/dash.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>Dashboard</h2>
+            <nav>
+                <a href="#" id="userLink">Users</a>
+                <a href="#" id="coursesLink">Courses</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <header class="header">
+                <button id="logoutButton" onclick="logout()">Logout</button>
+            </header>
+            
+            <section id="userSection">
+                <h2>Users</h2>
+                <ul id="userList"></ul>
+            </section>
+
+            <section id="coursesSection" style="display:none;">
+                <h2>Courses</h2>
+                <button onclick="toggleCourseForm()">Add New Course</button>
+                <div id="courseFormContainer" style="display: none;">
+                    <form id="courseForm" onsubmit="addCourse(event)">
+                        <label for="courseName">Course Name:</label>
+                        <input type="text" id="courseName" name="courseName" required>
+                        
+                        <label for="courseDescription">Course Description:</label>
+                        <textarea id="courseDescription" name="courseDescription" required></textarea>
+                        
+                        <label for="courseDuration">Duration (in weeks):</label>
+                        <input type="number" id="courseDuration" name="courseDuration" required>
+
+                        <label for="courseImage">Course Image:</label>
+                        <input type="file" id="courseImage" name="courseImage" accept="image/*" >
+                        
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+
+                <input type="text" id="searchBar" placeholder="Search courses..." onkeyup="searchCourse()">
+                <ul id="courseList"></ul>
+            </section>
+        </main>
+    </div>
+
+    <script src="./js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Grid</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .course-card {
+            transition: transform 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: scale(1.05);
+        }
+
+        .loading-spinner {
+            border-top-color: #3B82F6;
+            border-bottom-color: #3B82F6;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .alert {
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .alert.hide {
+            opacity: 0;
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .search-wrapper {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        .search-stats {
+            color: #64748b;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .highlight {
+            background-color: #fef08a;
+            padding: 0.1em 0;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: #64748b;
+            background-color: #f8fafc;
+            border-radius: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .search-animation {
+            animation: searchFade 0.3s ease-in-out;
+        }
+
+        @keyframes searchFade {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+        <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>oNLINE cOURSES</h2>
+        </a>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a href="index.html" class="nav-item nav-link">Home</a>
+                <a href="about.html" class="nav-item nav-link">About</a>
+                <a href="courses.html" class="nav-item nav-link active">Courses</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                    <div class="dropdown-menu fade-down m-0">
+                        <a href="team.html" class="dropdown-item">Our Team</a>
+                        <a href="testimonial.html" class="dropdown-item">Testimonial</a>
+                    </div>
+                </div>
+                <a href="contact.html" class="nav-item nav-link">Contact</a>
+            </div>
+            <a href="./auth.html" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i
+                    class="fa fa-arrow-right ms-3"></i></a>
+        </div>
+    </nav>
+    <div class="search-container">
+        <div class="search-wrapper">
+            <input type="text" id="courseSearch" class="search-input"
+                placeholder="Search courses by name, description, or duration..." autocomplete="off">
+            <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+        </div>
+        <div id="searchStats" class="search-stats"></div>
+    </div>
+    <div id="loginAlert"
+        class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative alert"
+        role="alert">
+        <span class="block sm:inline">Please login first to download course materials</span>
+    </div>
+
+    <div class="container mx-auto py-12 px-4">
+        <div id="loadingSpinner" class="w-full h-64 flex items-center justify-center">
+            <div class="loading-spinner rounded-full h-12 w-12 border-t-2 border-b-2"></div>
+        </div>
+
+        <div id="errorMessage" class="hidden w-full p-4 text-center text-red-500"></div>
+
+        <div id="courseContent" class="hidden">
+            <div class="text-center mb-12">
+                <h6 class="text-blue-600 font-semibold text-lg mb-2">Our Courses</h6>
+                <h2 class="text-4xl font-bold mb-4">Featured Courses</h2>
+            </div>
+            <div id="courseGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Courses will be inserted here -->
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-white mb-3">Quick Link</h4>
+                    <a class="btn btn-link" href="">About Us</a>
+                    <a class="btn btn-link" href="">Contact Us</a>
+                    <a class="btn btn-link" href="">Privacy Policy</a>
+                    <a class="btn btn-link" href="">Terms & Condition</a>
+                    <a class="btn btn-link" href="">FAQs & Help</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-white mb-3">Contact</h4>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>KIGALI City,Rwanda</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+0250795206973</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>Honnette@gmail.com</p>
+                    <div class="d-flex pt-2">
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-white mb-3">Gallery</h4>
+                    <div class="row g-2 pt-2">
+                        <div class="col-4">
+                            <img class="img-fluid bg-light p-1" src="img/course-1.jpg" alt="">
+                        </div>
+                        <div class="col-4">
+                            <img class="img-fluid bg-light p-1" src="img/course-2.jpg" alt="">
+                        </div>
+                        <div class="col-4">
+                            <img class="img-fluid bg-light p-1" src="img/course-3.jpg" alt="">
+                        </div>
+                        <div class="col-4">
+                            <img class="img-fluid bg-light p-1" src="img/course-2.jpg" alt="">
+                        </div>
+                        <div class="col-4">
+                            <img class="img-fluid bg-light p-1" src="img/course-3.jpg" alt="">
+                        </div>
+                        <div class="col-4">
+                            <img class="img-fluid bg-light p-1" src="img/course-1.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-white mb-3">Newsletter</h4>
+                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+                    <div class="position-relative mx-auto" style="max-width: 400px;">
+                        <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+                        <button type="button"
+                            class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a class="border-bottom" href="#">Online Course</a>, All Right Reserved.
+
+                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HONNETTE</a><br><br>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <div class="footer-menu">
+                            <a href="">Home</a>
+                            <a href="">Cookies</a>
+                            <a href="">Help</a>
+                            <a href="">FQAs</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <script>
+        let isLoggedIn = false;
+
+        function showLoginAlert() {
+            const alert = document.getElementById('loginAlert');
+            alert.classList.remove('hidden');
+            setTimeout(() => {
+                alert.classList.add('hide');
+                setTimeout(() => {
+                    alert.classList.add('hidden');
+                    alert.classList.remove('hide');
+                }, 300);
+            }, 3000);
+        }
+
+        function handleDownload(id) {
+            if (!isLoggedIn) {
+                showLoginAlert();
+                return;
+            }
+
+            const blob = new Blob([`Course materials for course ID: ${id}`], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `course-${id}-materials.txt`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        function createCourseCard(course) {
+            return `
+                <div class="course-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div class="relative">
+                        <img 
+                            src="${course.picture || "/api/placeholder/400/250"}"
+                            alt="${course.name}"
+                            class="w-full h-48 object-cover"
+                        >
+                        <div class="absolute top-4 right-4 bg-blue-500 text-white px-3 py-1 rounded-full text-sm">
+                            Featured
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">${course.name}</h3>
+                        <p class="text-gray-600 mb-4 line-clamp-2">${course.description}</p>
+                        <div class="flex items-center text-gray-500 mb-4">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-sm">${course.duration}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <button 
+                                onclick="handleDownload(${course.id})"
+                                class="bg-green-500 text-white px-4 py-2 rounded-full flex items-center hover:bg-green-600 transition-colors"
+                            >
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                </svg>
+                                Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function checkAuth() {
+            try {
+                const response = await fetch('http://localhost:4000/api/auth/status');
+                if (!response.ok) throw new Error('Auth check request failed');
+                const data = await response.json();
+                isLoggedIn = data.isAuthenticated;
+            } catch (err) {
+                console.error('Auth check failed:', err.message);
+                isLoggedIn = false;
+            }
+        }
+
+        async function initialize() {
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const errorMessage = document.getElementById('errorMessage');
+            const courseContent = document.getElementById('courseContent');
+            const courseGrid = document.getElementById('courseGrid');
+
+            try {
+                await checkAuth();
+                const response = await fetch('http://localhost:4000/api/courses');
+                if (!response.ok) throw new Error(`Failed to fetch courses. Status: ${response.status}`);
+
+                const courses = await response.json();
+                if (!courses.length) throw new Error("No courses found.");
+
+                courseGrid.innerHTML = courses.map(course => createCourseCard(course)).join('');
+                loadingSpinner.classList.add('hidden');
+                courseContent.classList.remove('hidden');
+            } catch (err) {
+                loadingSpinner.classList.add('hidden');
+                errorMessage.textContent = `Error loading courses: ${err.message}`;
+                errorMessage.classList.remove('hidden');
+            }
+        }
+
+        // Start the application
+        initialize();
+    </script>
+    <script>
+        // Add this code after your existing JavaScript code
+
+        function initializeSearch() {
+            const searchInput = document.getElementById('courseSearch');
+            const searchStats = document.getElementById('searchStats');
+            const courseGrid = document.getElementById('courseGrid');
+            let originalCourseCards = [];
+            let debounceTimer;
+
+            // Store original courses once they're loaded
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                        originalCourseCards = Array.from(courseGrid.children);
+                        observer.disconnect();
+                    }
+                });
+            });
+
+            observer.observe(courseGrid, { childList: true });
+
+            function debounce(func, wait) {
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(debounceTimer);
+                        func(...args);
+                    };
+                    clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(later, wait);
+                };
+            }
+
+            function highlightText(text, searchTerm) {
+                if (!searchTerm) return text;
+                const regex = new RegExp(`(${searchTerm})`, 'gi');
+                return text.replace(regex, '<span class="highlight">$1</span>');
+            }
+
+            const performSearch = debounce((searchTerm) => {
+                const normalizedSearchTerm = searchTerm.toLowerCase().trim();
+                let visibleCount = 0;
+
+                originalCourseCards.forEach(card => {
+                    const cardClone = card.cloneNode(true);
+                    const title = cardClone.querySelector('h3').textContent;
+                    const description = cardClone.querySelector('p').textContent;
+                    const duration = cardClone.querySelector('.text-sm').textContent;
+
+                    const isMatch =
+                        title.toLowerCase().includes(normalizedSearchTerm) ||
+                        description.toLowerCase().includes(normalizedSearchTerm) ||
+                        duration.toLowerCase().includes(normalizedSearchTerm);
+
+                    if (isMatch) {
+                        // Highlight matching text
+                        if (normalizedSearchTerm) {
+                            cardClone.querySelector('h3').innerHTML = highlightText(title, normalizedSearchTerm);
+                            cardClone.querySelector('p').innerHTML = highlightText(description, normalizedSearchTerm);
+                        }
+                        cardClone.style.display = '';
+                        visibleCount++;
+                    } else {
+                        cardClone.style.display = 'none';
+                    }
+
+                    // Replace existing card with highlighted version
+                    card.replaceWith(cardClone);
+                });
+
+                // Update search stats
+                searchStats.textContent = `Found ${visibleCount} ${visibleCount === 1 ? 'course' : 'courses'}`;
+
+                // Show no results message if needed
+                const existingNoResults = document.querySelector('.no-results');
+                if (visibleCount === 0) {
+                    if (!existingNoResults) {
+                        const noResults = document.createElement('div');
+                        noResults.className = 'no-results search-animation';
+                        noResults.textContent = 'No courses found matching your search criteria';
+                        courseGrid.parentNode.insertBefore(noResults, courseGrid.nextSibling);
+                    }
+                } else if (existingNoResults) {
+                    existingNoResults.remove();
+                }
+            }, 300);
+
+            searchInput.addEventListener('keyup', (e) => {
+                performSearch(e.target.value);
+            });
+
+            // Clear search when clicking the X (clear) button
+            searchInput.addEventListener('search', (e) => {
+                performSearch('');
+            });
+        }
+        // Initialize search after the DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeSearch);
+    </script>
+</body>
+
+</html>

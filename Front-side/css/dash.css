@@ -1,0 +1,122 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f7fa;
+}
+
+.dashboard {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #2e3a4f;
+    padding: 20px;
+    color: white;
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+}
+
+.sidebar nav a {
+    display: block;
+    color: white;
+    padding: 10px;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.sidebar nav a:hover {
+    background-color: #41506b;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.header {
+    display: flex;
+    justify-content: flex-end;
+}
+
+button {
+    padding: 8px 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border: none;
+    background-color: #2e3a4f;
+    color: white;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #41506b;
+}
+
+input[type="text"] {
+    padding: 8px;
+    width: 200px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: white;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#userList li {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    font-weight: bold;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+#courseFormContainer {
+    margin-top: 15px;
+}
+
+#courseForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#courseForm label {
+    font-weight: bold;
+}
+
+#courseForm input, #courseForm textarea, #courseForm button {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+#courseForm button {
+    background-color: #2e3a4f;
+    color: white;
+    border: none;
+    cursor: pointer;
+}

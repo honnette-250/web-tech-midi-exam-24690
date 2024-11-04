@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reset Password</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #50515a 0%, #848689 100%);
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .lock-icon {
+            background: linear-gradient(135deg, #3b3d48 0%, #1e262e 100%);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(100, 106, 135, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(102, 126, 234, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
+            }
+        }
+        
+        .lock-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+        
+        h2 {
+            color: #2d3748;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            font-size: 1.75rem;
+        }
+        
+        p {
+            color: #718096;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+        
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 1rem;
+            outline: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group input:focus {
+            border-color: grey;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+        
+        .input-group i {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .input-group i:hover {
+            color: grey;
+        }
+        
+        button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #26272b 0%, #0e0e0e 100%);
+            color: white;
+            border: none;
+            border-radius: 1rem;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(160, 166, 193, 0.4);
+        }
+        
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .error-message {
+            color: #e53e3e;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            display: none;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            background: #fff5f5;
+        }
+        
+        .success-message {
+            color: #2f855a;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            display: none;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            background: #f0fff4;
+        }
+        
+        .requirements {
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+        
+        .requirement {
+            color: #718096;
+            font-size: 0.875rem;
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .requirement i {
+            font-size: 0.75rem;
+        }
+        
+        .requirement.valid {
+            color: #2f855a;
+        }
+        
+        .requirement.valid i {
+            color: #2f855a;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h2>Reset Password</h2>
+        <p>Enter your new password below</p>
+
+        <div class="input-group">
+            <input type="password" id="password" placeholder="New password" required>
+            <i class="far fa-eye" id="togglePassword"></i>
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+            <i class="far fa-eye" id="toggleConfirmPassword"></i>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+        <div class="success-message" id="successMessage"></div>
+
+        <button id="resetBtn">Reset Password</button>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        if (!token) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = 'Invalid or missing reset token';
+            errorMessage.style.display = 'block';
+            document.getElementById('resetBtn').disabled = true;
+        }
+
+        function setupPasswordToggle(inputId, toggleId) {
+            const input = document.getElementById(inputId);
+            const toggle = document.getElementById(toggleId);
+            toggle.addEventListener('click', () => {
+                const type = input.type === 'password' ? 'text' : 'password';
+                input.type = type;
+                toggle.className = type === 'password' ? 'far fa-eye' : 'far fa-eye-slash';
+            });
+        }
+
+        setupPasswordToggle('password', 'togglePassword');
+        setupPasswordToggle('confirmPassword', 'toggleConfirmPassword');
+
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirmPassword');
+        const resetBtn = document.getElementById('resetBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+
+        const requirements = {
+            lengthReq: str => str.length >= 8,
+            upperReq: str => /[A-Z]/.test(str),
+            lowerReq: str => /[a-z]/.test(str),
+            numberReq: str => /[0-9]/.test(str)
+        };
+
+        function validatePassword(value) {
+            Object.entries(requirements).forEach(([req, validationFn]) => {
+                const element = document.getElementById(req);
+                element.classList.toggle('valid', validationFn(value));
+            });
+        }
+
+        password.addEventListener('input', e => validatePassword(e.target.value));
+
+        resetBtn.addEventListener('click', async() => {
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+
+            const passwordValue = password.value;
+            const confirmValue = confirmPassword.value;
+
+            if (passwordValue !== confirmValue) {
+                errorMessage.textContent = 'Passwords do not match';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            const isValid = Object.values(requirements).every(requirement => requirement(passwordValue));
+            if (!isValid) {
+                errorMessage.textContent = 'Please meet all password requirements';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            resetBtn.disabled = true;
+            resetBtn.textContent = 'Resetting...';
+
+            try {
+                const response = await fetch('http://localhost:4000/auth/reset-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        token,
+                        newPassword: passwordValue
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(response.status === 403 ? 'Invalid or expired reset token' : 'Failed to reset password. Please try again.');
+                }
+
+                successMessage.textContent = 'Password reset successfully! Redirecting to login...';
+                successMessage.style.display = 'block';
+                setTimeout(() => window.location.href = '/index.html', 2000);
+
+            } catch (error) {
+                errorMessage.textContent = error.message;
+                errorMessage.style.display = 'block';
+            } finally {
+                resetBtn.disabled = false;
+                resetBtn.textContent = 'Reset Password';
+            }
+        });
+    </script>
+</body>
+
+</html>
